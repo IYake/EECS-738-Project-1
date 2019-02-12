@@ -11,6 +11,10 @@ df = pd.read_csv('data/breast_cancer.csv', usecols = ['diagnosis', 'radius_mean'
 #print(df)
 benign = df.loc[df['diagnosis'] == 'B']
 malignant = df.loc[df['diagnosis'] == 'M']
-df.plot(kind='scatter',x = 'fractal_dimension_worst', y ='radius_mean', color='red')
+#print(benign)
+#print(malignant)
+ax = benign.plot(kind='scatter',x = 'fractal_dimension_worst', y ='radius_mean', color='red', label = 'malignant')
+malignant.plot(kind='scatter',x = 'fractal_dimension_worst', y ='radius_mean', color='blue', ax=ax, label='benign')
+
  
 
