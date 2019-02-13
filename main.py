@@ -7,7 +7,7 @@ Created on Tue Feb 12 15:45:21 2019
 
 import pandas as pd
 import matplotlib.pyplot as plt
-import gaussian_curve_class
+import gaussian_curve_class as gcc
 
 #read data
 df = pd.read_csv('data/breast_cancer.csv', usecols = ['diagnosis', 'radius_mean', 'fractal_dimension_worst'])
@@ -30,7 +30,9 @@ mean2 = pd.DataFrame({'x': [0.06], 'y': [10]})
 mean2.plot(x='x', y='y', ax=ax, style='gx', label='mean2')
 mean1.plot(x='x', y='y', ax=ax, style='gx', label='mean1')
 #continue until likelihood difference between iterations passes tolerance level
-
+gc = gcc.gaussian_curve(10,20,30)
+gc.set_pi(5)
+print(gc.get_pi())
 
  
 
