@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Feb 12 17:59:21 2019
-
-@author: Ian
-"""
+from scipy.stats import multivariate_normal
 
 class gaussian_curve:
     def __init__(self, mean, cov_matrix, pi): #pi = gaussian weighting factor
         self.mean = mean
         self.cov_matrix = cov_matrix
         self.pi = pi
+        self.normal = multivariate_normal(mean,cov_matrix)
         
     def set_mean(self, value):
         self.mean = value
@@ -25,3 +21,6 @@ class gaussian_curve:
         self.pi = value
     def get_pi(self):
         return self.pi
+    
+    def update_normal(self):
+        self.normal = multivariate_normal(mean,cov_matrix)
