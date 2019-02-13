@@ -2,6 +2,7 @@
 Machine Learning project. Build probability mixture models for Kaggle datasets.
 
 Expectation Maximization Algorithm:
+
 Our algorithm consists of 4 steps: 
   1) placing a random mean, finding the standard deviation and the weighting factor for each Gaussian. 
   2) Assigning a responsibility for each point. 
