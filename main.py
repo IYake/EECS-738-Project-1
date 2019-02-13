@@ -29,8 +29,8 @@ xMax, xMin, yMax, yMin = df.loc[:,X].max(), df.loc[:,X].min(), df.loc[:,Y].max()
 mean1 = np.array([(xMax-xMin)*3/4+xMin,(yMax-yMin)*1/4+yMin])
 mean2 = np.array([(xMax-xMin)*1/4+xMin,(yMax-yMin)*3/4+yMin])
 
-cov_matrix1 = np.array([[0.02,0],[0,5]])
-cov_matrix2 = np.array([[0.02,0],[0,5]])
+cov_matrix1 = np.array([[(xMax-xMin)/4,0],[0,(yMax-yMin)/4]])
+cov_matrix2 = np.array([[(xMax-xMin)/4,0],[0,(yMax-yMin)/4]])
 
 pi1 = 1.0/numClasses
 pi2 = pi1
