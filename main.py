@@ -22,12 +22,12 @@ malignant = df.loc[df['diagnosis'] == 'M']
 ax = benign.plot(kind='scatter',x = X, y = Y,color='red', label = 'malignant')
 malignant.plot(kind='scatter',x = X, y = Y, color='blue', ax=ax, label='benign')
 
-
 #create random means and stdevs and gaussian weighting factor
 numClasses = 2
 
-mean1 = np.array([0.16,20])
-mean2 = np.array([0.06,10])
+xMax, xMin, yMax, yMin = df.loc[:,X].max(), df.loc[:,X].min(), df.loc[:,Y].max(), df.loc[:,Y].min()
+mean1 = np.array([(xMax-xMin)*3/4+xMin,(yMax-yMin)*1/4+yMin])
+mean2 = np.array([(xMax-xMin)*1/4+xMin,(yMax-yMin)*3/4+yMin])
 
 cov_matrix1 = np.array([[0.02,0],[0,5]])
 cov_matrix2 = np.array([[0.02,0],[0,5]])
