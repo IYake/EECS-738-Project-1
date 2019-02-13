@@ -12,8 +12,6 @@ benign = df.loc[df['diagnosis'] == 'B']
 malignant = df.loc[df['diagnosis'] == 'M']
 
 #plot data
-#ax = benign.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = 'malignant')
-#malignant.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=ax, label='benign')
 
 #create random means and sigmas and responsibilities
 numClasses = 2
@@ -33,13 +31,6 @@ gcc2 = gcc.gaussian_curve(mu_2, sigma2, pi1)
 
 #assign responsibility for each point to each gaussian curve
 #find new means, stdevs, and gaussian weighting factors
-
-
-
-
-
-
-
 
 
 ###plot###
