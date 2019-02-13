@@ -25,5 +25,17 @@ class gaussian_curve:
     def update_normal(self):
         self.normal = multivariate_normal(self.mean,self.cov_matrix)
 
-    def covar(self):
-        pass
+    def covar(self, X, Y):
+        #combine matrices to make a 2d array
+        size = len(X)
+        A = np.column_stack(X,Y)
+        one = np.ones((size, size))
+        #calculating devation values and storing in a
+        a1 = np.matmul(one, A)
+        a1 = a1*(1/size)
+        a = np.subtract(A, a1)
+        #to find deviation score sums of sq matrix, compute a'a
+        V = np.matmul(np.transpose(a), a)
+        V = V * (1/size)
+        return V
+        
