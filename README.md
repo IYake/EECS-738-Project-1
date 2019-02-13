@@ -17,5 +17,8 @@ Our first data set, breast cancer we chose 2 clusters since there is two differe
 Data Set Two:
 
 
+How to Compile: 
+
+
 References: 
 
