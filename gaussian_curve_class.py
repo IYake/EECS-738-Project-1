@@ -24,3 +24,6 @@ class gaussian_curve:
     
     def update_normal(self):
         self.normal = multivariate_normal(self.mean,self.cov_matrix)
+
+    def covar(self):
+        pass
