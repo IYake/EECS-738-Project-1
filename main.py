@@ -20,8 +20,16 @@ malignant.plot(kind='scatter',x = 'fractal_dimension_worst', y ='radius_mean', c
 
 
 #create random means and stdevs and gaussian weighting factor
+numClasses = 2
 mean1 = pd.DataFrame({'x': [0.16], 'y': [20]})
 mean2 = pd.DataFrame({'x': [0.06], 'y': [10]})
+stdev1 = pd.DataFrame({'x': [0.02], 'y': [5]})
+stdev2 = pd.DataFrame({'x': [0.02], 'y': [5]})
+pi1 = 1.0/numClasses
+pi2 = pi1
+
+gcc1 = gcc.gaussian_curve(mean1, stdev1, pi1)
+gcc2 = gcc.gaussian_curve(mean2, stdev2, pi1)
 #assign responsibility for each point to each gaussian curve
 #find new means, stdevs, and gaussian weighting factors
 
@@ -29,10 +37,11 @@ mean2 = pd.DataFrame({'x': [0.06], 'y': [10]})
 
 mean2.plot(x='x', y='y', ax=ax, style='gx', label='mean2')
 mean1.plot(x='x', y='y', ax=ax, style='gx', label='mean1')
+ax.set_xlabel("fractal_dimension_worst")
+ax.set_ylabel("radius_mean")
 #continue until likelihood difference between iterations passes tolerance level
-gc = gcc.gaussian_curve(10,20,30)
-gc.set_pi(5)
-print(gc.get_pi())
+gcc = gcc.gaussian_curve(mean1,20,30)
+print(gcc.get_mean())
 
  
 
