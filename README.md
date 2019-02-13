@@ -22,3 +22,4 @@ How to Compile:
 
 References: 
 
+https://www.ics.uci.edu/~smyth/courses/cs274/notes/EMnotes.pdf 
