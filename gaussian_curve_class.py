@@ -23,4 +23,4 @@ class gaussian_curve:
         return self.pi
     
     def update_normal(self):
-        self.normal = multivariate_normal(mean,cov_matrix)
+        self.normal = multivariate_normal(self.mean,self.cov_matrix)
