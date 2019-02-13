@@ -12,7 +12,7 @@ Our algorithm consists of 4 steps:
 
 Data Set One:
 
-Our first data set, breast cancer we chose 2 clusters since there is two different type of tumors being described in the data set: benign and malignant.
+Our first data set, breast cancer, we chose two clusters since there is two different type of tumors being described in the data set: benign and malignant.
 
 Data Set Two:
 
