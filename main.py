@@ -7,6 +7,7 @@ Created on Tue Feb 12 15:45:21 2019
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 import gaussian_curve_class as gcc
 
 #read data
@@ -21,27 +22,35 @@ malignant.plot(kind='scatter',x = 'fractal_dimension_worst', y ='radius_mean', c
 
 #create random means and stdevs and gaussian weighting factor
 numClasses = 2
-mean1 = pd.DataFrame({'x': [0.16], 'y': [20]})
-mean2 = pd.DataFrame({'x': [0.06], 'y': [10]})
-stdev1 = pd.DataFrame({'x': [0.02], 'y': [5]})
-stdev2 = pd.DataFrame({'x': [0.02], 'y': [5]})
+
+mean1 = np.array([0.16,20])
+mean2 = np.array([0.06,10])
+
+cov_matrix1 = np.array([[0.02,0],[0,5]])
+cov_matrix2 = np.array([[0.02,0],[0,5]])
+
 pi1 = 1.0/numClasses
 pi2 = pi1
 
 gcc1 = gcc.gaussian_curve(mean1, stdev1, pi1)
 gcc2 = gcc.gaussian_curve(mean2, stdev2, pi1)
+
 #assign responsibility for each point to each gaussian curve
 #find new means, stdevs, and gaussian weighting factors
 
 ###plot###
 
-mean2.plot(x='x', y='y', ax=ax, style='gx', label='mean2')
-mean1.plot(x='x', y='y', ax=ax, style='gx', label='mean1')
+#.plot(x='x', y='y', ax=ax, style='gx', label='mean2')
+#mean1.plot(x='x', y='y', ax=ax, style='gx', label='mean1')
 ax.set_xlabel("fractal_dimension_worst")
 ax.set_ylabel("radius_mean")
 #continue until likelihood difference between iterations passes tolerance level
 gcc = gcc.gaussian_curve(mean1,20,30)
-print(gcc.get_mean())
+
+plt.plot(mean1[0],mean1[1],'gx')
+#plt.plot([1,2,3,4], [1,4,9,16], 'ro')
+#plt.axis([0, 6, 0, 20])
+#plt.show()
 
  
 
