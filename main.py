@@ -45,10 +45,7 @@ ax.set_ylabel(Y_label)
 plt.plot(mu_1[0],mu_1[1],'gx')
 plt.plot(mu_2[0],mu_2[1],'gx')"""
 
-#N = 60
-#X = np.linspace(xMin/2, xMax*4/3, N)
-#Y = np.linspace(yMin/2, yMax*4/3, N)
-#X, Y = np.meshgrid(X, Y)
+
 numPoints = df.shape[0]
 if (numPoints % 2 != 0):
     X = df.loc[:numPoints-2,X_label].values
@@ -57,20 +54,11 @@ else:
     X = df.loc[:numPoints,X_label].values
     Y = df.loc[:numPoints,Y_label].values
 
-#X = df.loc[1:568,X_label].values
-
-print("X dimension: %i" % X.shape[0])
 newXs = np.array_split(X,2)
 newYs = np.array_split(Y,2)
 
 newX = np.column_stack((newXs[0],newXs[1]))
 newY = np.column_stack((newYs[0],newYs[1]))
-#print(newX)
-# Mean vector and covariance matrix
-#mu = np.array([0., 1.])
-#Sigma = np.array([[ 1. , -0.5], [-0.5,  1.5]])
-#curve1.set_mu(mu)
-#curve1.set_sigma(Sigma)
 
 # Pack X and Y into a single 3-dimensional array
 X = newX
