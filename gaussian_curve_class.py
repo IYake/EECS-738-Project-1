@@ -1,4 +1,4 @@
-from scipy.stats import multivariate_normal
+#from scipy.stats import multivariate_normal
 import numpy as np
 #import matplotlib.pyplot as plt
 #from matplotlib import cm
@@ -8,7 +8,8 @@ class gaussian_curve:
         self.mu = mu
         self.sigma = sigma
         self.pi = pi
-        self.normal = multivariate_normal(mu,sigma)
+        self.probabilities = None
+        self.responsibilities = None
         
     def set_mu(self, value):
         self.mu = value
@@ -25,8 +26,18 @@ class gaussian_curve:
     def get_pi(self):
         return self.pi
     
-    def update_normal(self):
-        self.normal = multivariate_normal(self.mu,self.sigma)
+    def set_probabilities(self, pos):
+        self.probabilities = self.multivariate_gaussian(pos)
+    def get_probabilities(self):
+        return self.probabilities
+    
+    def set_responsibilities(self, responsibilities):
+        self.responsibilities = responsibilities
+    def get_responsibilities(self):
+        return self.responsibilities
+    
+    #def update_normal(self):
+    #    self.normal = multivariate_normal(self.mu,self.sigma)
         
     def multivariate_gaussian(self, pos):
         """Return the multivariate Gaussian distribution on array pos.

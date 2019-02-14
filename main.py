@@ -67,7 +67,19 @@ pos = np.empty(X.shape + (2,))
 pos[:, :, 0] = X
 pos[:, :, 1] = Y
 
-Z = curve1.multivariate_gaussian(pos)
+#Z = curve1.multivariate_gaussian(pos)
+curve1.set_probabilities(pos)
+Z = curve1.get_probabilities()
+
+
+#################
+# calculating responsibility
+curve2.set_probabilities(pos)
+Z2 = curve2.get_probabilities()
+
+curve1.set_responsibilities(  (curve1.get_pi()*curve1.get_probabilities())/(curve2.get_pi()*curve2.get_probabilities()+curve1.get_pi()*curve1.get_probabilities())  )
+curve1.set_responsibilities(  (curve1.get_pi()*curve2.get_probabilities())/(curve2.get_pi()*curve2.get_probabilities()+curve1.get_pi()*curve1.get_probabilities())  )
+
 ###################
 fig = plt.figure()
 ax = fig.gca(projection='3d')
