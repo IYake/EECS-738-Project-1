@@ -22,8 +22,8 @@ xMax, xMin, yMax, yMin = df.loc[:,X_label].max(), df.loc[:,X_label].min(), df.lo
 mu_1 = np.array([(xMax-xMin)*3/4+xMin,(yMax-yMin)*1/4+yMin])
 mu_2 = np.array([(xMax-xMin)*1/4+xMin,(yMax-yMin)*3/4+yMin])
 
-sigma1 = np.array([[(xMax-xMin)/4,0],[0,(yMax-yMin)/4]])
-sigma2 = np.array([[(xMax-xMin)/4,0],[0,(yMax-yMin)/4]])
+sigma1 = np.array([[(xMax-xMin)/32,0],[0,(yMax-yMin)/2]])
+sigma2 = np.array([[(xMax-xMin)/32,0],[0,(yMax-yMin)/2]])
 
 pi1 = 1.0/numClasses
 pi2 = pi1
@@ -63,6 +63,13 @@ newY = np.column_stack((newYs[0],newYs[1]))
 # Pack X and Y into a single 3-dimensional array
 X = newX
 Y = newY
+
+### testing with this
+N = 60
+X = np.linspace(xMin-(xMax-xMin)*1/4, xMax+(xMax-xMin)*1/4, N)
+Y = np.linspace(yMin-(yMax-yMin)*1/4, yMax+(yMax-yMin)*1/4, N)
+X, Y = np.meshgrid(X, Y)
+###
 pos = np.empty(X.shape + (2,))
 pos[:, :, 0] = X
 pos[:, :, 1] = Y
@@ -83,14 +90,26 @@ curve1.set_responsibilities(  (curve1.get_pi()*curve2.get_probabilities())/(curv
 ###################
 fig = plt.figure()
 ax = fig.gca(projection='3d')
-#ax.plot_surface(X, Y, Z, rstride=3, cstride=3, linewidth=1, antialiased=True,
-               #cmap=cm.viridis)
 
-cset = ax.contourf(X, Y, Z, zdir='z', offset=-0.15, cmap=cm.viridis)
+step = 0.01
+m = np.amax(Z)
+levels = np.arange(m/2, m, step) + step
+offset=-0.15
+cset = ax.contourf(X, Y, Z, levels, zdir='z', offset=offset, cmap=cm.viridis, alpha = 0.3)
+cset = ax.contourf(X, Y, Z2, levels, zdir='z', offset=offset, cmap=cm.viridis, alpha = 0.3)
 
+""" To see 3d view
+step = 0.002
+levels = np.arange(m/2, m, step) + step
+ax.plot_surface(X, Y, Z, levels, rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis, alpha = 0.5)
+ax.plot_surface(X, Y, Z2, levels, rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis, alpha = 0.5)
+"""
 # Adjust the limits, ticks and view angle
-ax.set_zlim(-0.15,0.2)
-ax.set_zticks(np.linspace(0,0.2,5))
+ax.set_zlim(offset,-offset*3/2)
+ax.set_xlim(xMin-(xMax-xMin)*1/4, xMax + (xMax-xMin)*1/4)
+ax.set_ylim(yMin-(yMax-yMin)*1/4, yMax + (yMax-yMin)*1/4)
+
+#ax.set_zticks(np.linspace(0,0.2,5))
 ax.view_init(50, -120)
 
 plt.show()
