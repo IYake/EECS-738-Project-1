@@ -49,5 +49,18 @@ class gaussian_curve:
     
         return np.exp(-fac / 2) / N
 
-    def covar(self):
-        pass
+#Still need to factor in the responsibility
+    def covar(self, X, Y):
+        size = len(X)
+        #combine matrices to make a 2d array
+        A = np.column_stack(X,Y)
+        one = np.ones((size, size))
+        #calculating devation values and storing in a
+        a1 = np.matmul(one, A)
+        a1 = a1*(1/size)
+        a = np.subtract(A, a1)
+        #to find deviation score sums of sq matrix, compute a'a
+        V = np.matmul(np.transpose(a), a)
+        V = V * (1/size)
+        return V
+        
