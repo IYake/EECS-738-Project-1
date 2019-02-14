@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import gaussian_curve_class as gcc
 from matplotlib import cm
-
+from mpl_toolkits.mplot3d import Axes3D
 
 #read data
 Y_label = 'radius_mean'
