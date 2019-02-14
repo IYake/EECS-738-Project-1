@@ -85,7 +85,7 @@ curve2.set_probabilities(pos)
 Z2 = curve2.get_probabilities()
 
 curve1.set_responsibilities(  (curve1.get_pi()*curve1.get_probabilities())/(curve2.get_pi()*curve2.get_probabilities()+curve1.get_pi()*curve1.get_probabilities())  )
-curve1.set_responsibilities(  (curve1.get_pi()*curve2.get_probabilities())/(curve2.get_pi()*curve2.get_probabilities()+curve1.get_pi()*curve1.get_probabilities())  )
+curve2.set_responsibilities(  (curve1.get_pi()*curve2.get_probabilities())/(curve2.get_pi()*curve2.get_probabilities()+curve1.get_pi()*curve1.get_probabilities())  )
 
 ###################
 fig = plt.figure()
