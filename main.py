@@ -36,14 +36,14 @@ curve2 = gcc.gaussian_curve(mu_2, sigma2, pi1)
 
 
 ###plot###
-"""ax = benign.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = 'malignant')
-malignant.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=ax, label='benign')
+bx = benign.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = 'malignant')
+malignant.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, label='benign')
 
-ax.set_xlabel(X_label)
-ax.set_ylabel(Y_label)
+bx.set_xlabel(X_label)
+bx.set_ylabel(Y_label)
 
 plt.plot(mu_1[0],mu_1[1],'gx')
-plt.plot(mu_2[0],mu_2[1],'gx')"""
+plt.plot(mu_2[0],mu_2[1],'gx')
 
 
 numPoints = df.shape[0]
