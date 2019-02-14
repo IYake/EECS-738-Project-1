@@ -18,23 +18,17 @@ class gaussian_curve:
     
     def set_sigma(self, value):
         self.sigma = value
-    def get_sigma(self):
-        return self.sigma
 
     def set_pi(self, value):
         self.pi = value
-    def get_pi(self):
-        return self.pi
     
     def set_probabilities(self, pos):
         self.probabilities = self.multivariate_gaussian(pos)
-    def get_probabilities(self):
-        return self.probabilities
+    def probabilities_at(self, pos):
+        return self.multivariate_gaussian(pos)
     
     def set_responsibilities(self, responsibilities):
         self.responsibilities = responsibilities
-    def get_responsibilities(self):
-        return self.responsibilities
     
     #def update_normal(self):
     #    self.normal = multivariate_normal(self.mu,self.sigma)
