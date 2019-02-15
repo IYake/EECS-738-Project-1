@@ -54,22 +54,19 @@ Z2 = curve2.probabilities_at(data_pos)
 Z11 = Z1[:,0]
 Z12 = Z1[:,1]
 Z1 = np.concatenate((Z11,Z12),axis=0)
+curve1.set_probabilities(Z1)
+
 Z21 = Z2[:,0]
 Z22 = Z2[:,1]
-Z2 = np.concatenate((Z11,Z12),axis=0)
-curve1.set_probabilities(Z1)
+Z2 = np.concatenate((Z21,Z22),axis=0)
 curve2.set_probabilities(Z2)
-print(curve2.probabilities.shape)
+
 #################
 # calculating responsibility
 ####### shape changes when probabilities are set for some reason. Put back getters to fix
-"""
-Z1 = curve1.probabilities_at(data_pos)
-print(Z1.shape)
 
-curve1.set_responsibilities(  (curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities) )
-curve2.set_responsibilities(  (curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities) )
-"""
+curve1.set_responsibilities((curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
+curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
 
 ###################
 #Plot scatter points
@@ -83,6 +80,8 @@ bx.set_ylabel(Y_label)
 plt.plot(mu_1[0],mu_1[1],'gx')
 plt.plot(mu_2[0],mu_2[1],'gx')
 ###
+
+
 
  
 
