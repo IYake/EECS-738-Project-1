@@ -27,7 +27,6 @@ curve2 = gcc.gaussian_curve(mu_2, sigma2, pi1)
 
 
 #reshape X column and Y column so they can be processed for Z
-
 numPoints = df.shape[0]
 if (numPoints % 2 != 0):
     X = df.loc[:numPoints-2,X_label].values
@@ -35,32 +34,42 @@ if (numPoints % 2 != 0):
 else:
     X = df.loc[:numPoints,X_label].values
     Y = df.loc[:numPoints,Y_label].values
-newXs = np.array_split(X,2)
-newYs = np.array_split(Y,2)
-newX = np.column_stack((newXs[0],newXs[1]))
-newY = np.column_stack((newYs[0],newYs[1]))
+X_arrs = np.array_split(X,2)
+Y_arrs = np.array_split(Y,2)
+twoD_X = np.column_stack((X_arrs[0],X_arrs[1]))
+twoD_Y = np.column_stack((Y_arrs[0],Y_arrs[1]))
 
 
 # Pack X and Y into a single 3-dimensional array
-X = newX
-Y = newY
 
-data_pos = np.empty(X.shape + (2,))
-data_pos[:, :, 0] = X
-data_pos[:, :, 1] = Y
+data_pos = np.empty(twoD_X.shape + (2,))
+data_pos[:, :, 0] = twoD_X
+data_pos[:, :, 1] = twoD_Y
 
 #calculate distribution values for points in data
-curve1.set_probabilities(curve1.probabilities_at(data_pos))
-curve2.set_probabilities(curve2.probabilities_at(data_pos))
+Z1 = curve1.probabilities_at(data_pos)
+Z2 = curve2.probabilities_at(data_pos)
+
+#unpack Z into single dimensional array
+Z11 = Z1[:,0]
+Z12 = Z1[:,1]
+Z1 = np.concatenate((Z11,Z12),axis=0)
+Z21 = Z2[:,0]
+Z22 = Z2[:,1]
+Z2 = np.concatenate((Z11,Z12),axis=0)
+curve1.set_probabilities(Z1)
+curve2.set_probabilities(Z2)
+print(curve2.probabilities.shape)
 #################
 # calculating responsibility
 ####### shape changes when probabilities are set for some reason. Put back getters to fix
+"""
 Z1 = curve1.probabilities_at(data_pos)
 print(Z1.shape)
 
 curve1.set_responsibilities(  (curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities) )
 curve2.set_responsibilities(  (curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities) )
-
+"""
 
 ###################
 #Plot scatter points

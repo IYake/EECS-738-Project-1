@@ -22,8 +22,8 @@ class gaussian_curve:
     def set_pi(self, value):
         self.pi = value
     
-    def set_probabilities(self, pos):
-        self.probabilities = self.multivariate_gaussian(pos)
+    def set_probabilities(self, probabilities):
+        self.probabilities = probabilities
     def probabilities_at(self, pos):
         return self.multivariate_gaussian(pos)
     
