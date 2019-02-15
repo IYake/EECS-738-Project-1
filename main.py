@@ -27,6 +27,7 @@ curve2 = gcc.gaussian_curve(mu_2, sigma2, pi1)
 
 
 #reshape X column and Y column so they can be processed for Z
+
 numPoints = df.shape[0]
 if (numPoints % 2 != 0):
     X = df.loc[:numPoints-2,X_label].values
@@ -39,35 +40,26 @@ newYs = np.array_split(Y,2)
 newX = np.column_stack((newXs[0],newXs[1]))
 newY = np.column_stack((newYs[0],newYs[1]))
 
+
 # Pack X and Y into a single 3-dimensional array
 X = newX
 Y = newY
+
 data_pos = np.empty(X.shape + (2,))
 data_pos[:, :, 0] = X
 data_pos[:, :, 1] = Y
+
 #calculate distribution values for points in data
 curve1.set_probabilities(curve1.probabilities_at(data_pos))
 curve2.set_probabilities(curve2.probabilities_at(data_pos))
 #################
 # calculating responsibility
 ####### shape changes when probabilities are set for some reason. Put back getters to fix
-print(curve1.probabilities_at(data_pos).shape)
+Z1 = curve1.probabilities_at(data_pos)
+print(Z1.shape)
 
 curve1.set_responsibilities(  (curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities) )
 curve2.set_responsibilities(  (curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities) )
-
-### generate points to display ellipse on graph
-N = 60
-X = np.linspace(xMin-(xMax-xMin)*1/4, xMax+(xMax-xMin)*1/4, N)
-Y = np.linspace(yMin-(yMax-yMin)*1/4, yMax+(yMax-yMin)*1/4, N)
-X, Y = np.meshgrid(X, Y)
-###
-graphing_pos = np.empty(X.shape + (2,))
-graphing_pos[:, :, 0] = X
-graphing_pos[:, :, 1] = Y
-
-Z = curve1.probabilities_at(graphing_pos)
-Z2 = curve2.probabilities_at(graphing_pos)
 
 
 ###################
@@ -82,29 +74,6 @@ bx.set_ylabel(Y_label)
 plt.plot(mu_1[0],mu_1[1],'gx')
 plt.plot(mu_2[0],mu_2[1],'gx')
 ###
-fig = plt.figure()
-ax = fig.gca(projection='3d')
 
-step = 0.01
-m = np.amax(Z)
-levels = np.arange(m/2, m, step) + step
-offset=-0.15
-cset = ax.contourf(X, Y, Z, levels, zdir='z', offset=offset, cmap=cm.viridis, alpha = 0.3)
-cset = ax.contourf(X, Y, Z2, levels, zdir='z', offset=offset, cmap=cm.viridis, alpha = 0.3)
-
-""" To see 3d view
-step = 0.002
-levels = np.arange(m/2, m, step) + step
-ax.plot_surface(X, Y, Z, levels, rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis, alpha = 0.5)
-ax.plot_surface(X, Y, Z2, levels, rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis, alpha = 0.5)
-"""
-# Adjust the limits, ticks and view angle
-ax.set_zlim(offset,-offset*3/2)
-ax.set_xlim(xMin-(xMax-xMin)*1/4, xMax + (xMax-xMin)*1/4)
-ax.set_ylim(yMin-(yMax-yMin)*1/4, yMax + (yMax-yMin)*1/4)
-#ax.set_zticks(np.linspace(0,0.2,5))
-ax.view_init(50, -120)
-
-plt.show()
  
 
