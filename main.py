@@ -89,8 +89,12 @@ mean2 = curve2.mu
 
 #need to figure out how to get the cov of just one at a time
 #todo: figure out what Z is and what should be passed in
-cov1 = (curve1.covar(X, Y, Z1))
-cov2 = curve2.covar(X, Y, Z2)
+#cov1 = (curve1.covar(X, Y, Z1))
+#cov2 = curve2.covar(X, Y, Z2)
+cov1 = curve1.sigma
+cov2 = curve2.sigma
+print(cov1)
+print(cov2)
 
 lambda1_, v1 = np.linalg.eig(cov1)
 lambda2_, v2 = np.linalg.eig(cov2)
@@ -99,8 +103,8 @@ lambda1_ = np.sqrt(lambda1_)
 lambda2_ = np.sqrt(lambda2_)
 width1 = lambda1_[0] * 2 * ( 1)
 height1 = lambda1_[1] * 2 * ( 1)
-width2 = lambda2_[0] * 2 * ( 2)
-height2 = lambda2_[1] * 2 * (2)
+width2 = lambda2_[0] * 2 * ( 1)
+height2 = lambda2_[1] * 2 * (1)
 angle1 = math.degrees(math.acos(v1[0, 0]))
 angle2 = math.degrees(math.acos(v2[0, 0]))
 
