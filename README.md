@@ -12,7 +12,7 @@ Our algorithm consists of 4 steps:
 
 # Data Set One:
 
-Our first data set, breast cancer, we chose to use EM with two clusters since there is two different type of tumors being described in the data set: benign and malignant. We then chose two independent variables to analyize within the set. 
+Our first data set, breast cancer, we chose to use EM with two clusters since there is two different type of tumors being described in the data set: benign and malignant. We then chose two independent variables (radius mean and concavity mean) to analyize within the data set. 
 
 # Data Set Two:
 
