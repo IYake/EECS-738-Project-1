@@ -12,7 +12,7 @@ Our algorithm consists of 4 steps:
 
 # Data Set One:
 
-Our first data set, breast cancer, we chose two clusters since there is two different type of tumors being described in the data set: benign and malignant.
+Our first data set, breast cancer, we chose to use EM with two clusters since there is two different type of tumors being described in the data set: benign and malignant. We then chose two independent variables to analyize within the set. 
 
 # Data Set Two:
 
@@ -27,3 +27,5 @@ https://www.ics.uci.edu/~smyth/courses/cs274/notes/EMnotes.pdf
 https://scipython.com/blog/visualizing-the-bivariate-gaussian-distribution/
 
 “Mixture Models and EM” Pattern Recognition and Machine Learning, by Christopher M. Bishop, Springer, 2007, pp. 437–439.
+
+https://stackoverflow.com/questions/20126061/creating-a-confidence-ellipses-in-a-sccatterplot-using-matplotlib
