@@ -16,6 +16,7 @@ Our first data set, breast cancer, we chose to use EM with two clusters since th
 
 # Data Set Two:
 
+For our second data set we chose the Forrest Cover Type Dataset. Since the size of this data set was large we decided to only look at two different tree types: Douglas Fir and Krummholz. We decided to use EM with two clusters and two independent variables: Elevation and horizontal distance to hydrology. 
 
 # How to Compile: 
 
