@@ -78,4 +78,9 @@ class gaussian_curve:
         V = np.matmul(np.transpose(a2), a)
         V = V * (1/size)
         return V
-        
+    
+    def update_pi(self):
+        """print(self.responsibilities)
+        print(np.sum(self.responsibilities))
+        print(self.responsibilities.size)"""
+        self.pi = np.sum(self.responsibilities)/self.responsibilities.size
