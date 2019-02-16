@@ -1,5 +1,6 @@
 #from scipy.stats import multivariate_normal
 import numpy as np
+import math
 #import matplotlib.pyplot as plt
 #from matplotlib import cm
 
@@ -18,6 +19,8 @@ class gaussian_curve:
 
     def set_sigma(self, value):
         self.sigma = value
+    def update_sigma(self,X,Y):
+        self.sigma = self.covar(X,Y,self.responsibilities)
 
     def set_pi(self, value):
         self.pi = value
@@ -26,6 +29,13 @@ class gaussian_curve:
         self.probabilities = probabilities
     def probabilities_at(self, pos):
         return self.multivariate_gaussian(pos)
+    def update_probs(self, pos):
+        #transforms data that comes in and back as 2d array to 1d
+        Z = self.probabilities_at(pos)
+        Z1 = Z[:,0]
+        Z2 = Z[:,1]
+        Z = np.concatenate((Z1,Z2),axis=0)
+        self.set_probabilities(Z)
 
     def set_responsibilities(self, responsibilities):
         self.responsibilities = responsibilities
@@ -74,7 +84,9 @@ class gaussian_curve:
         a1 = a1*(1/size)
         a = np.subtract(A, a1)
         
-        a2 = np.multiply(a,R)
+        a2 = a
+        a2[:,0] *= np.multiply(a2[:,0],R)
+        a2[:,1] *= np.multiply(a2[:,1],R)
         #to find deviation score sums of sq matrix, compute a'a
         V = np.matmul(np.transpose(a2), a)
         Nk = np.sum(self.responsibilities)
@@ -90,4 +102,44 @@ class gaussian_curve:
         Nk = np.sum(self.responsibilities)
         points = np.column_stack((X,Y))
         self.mu =  np.matmul(np.transpose(self.responsibilities), points) / Nk
+        
+
+def log_likelihood(size, curve1, curve2):
+    log_likelihood = 0
+    print("Curve1, mu = %f, %f" % (curve1.mu[0], curve1.mu[1]))
+    for i in range(size):
+        temp = curve1.pi*curve1.probabilities[i]
+        temp += curve2.pi*curve2.probabilities[i]
+        #natural log
+        log_likelihood += math.log1p(temp)
+    return log_likelihood
+
+def iterate(curve1, curve2, X, Y):
+    #1 update mu
+    curve1.update_mu(X,Y)
+    curve2.update_mu(X,Y)
+    
+    #2 update sigma
+    curve1.update_sigma(X,Y)
+    curve2.update_sigma(X,Y)
+    
+    #3 update prob
+    X_arrs = np.array_split(X,2)
+    Y_arrs = np.array_split(Y,2)
+    twoD_X = np.column_stack((X_arrs[0],X_arrs[1]))
+    twoD_Y = np.column_stack((Y_arrs[0],Y_arrs[1]))
+    data_pos = np.empty(twoD_X.shape + (2,))
+    data_pos[:, :, 0] = twoD_X
+    data_pos[:, :, 1] = twoD_Y
+    
+    curve1.update_probs(data_pos)
+    curve2.update_probs(data_pos)
+    
+    #4 update resp
+    curve1.set_responsibilities((curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
+    curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
+    
+    #5 update pi
+    curve1.update_pi()
+    curve2.update_pi()
         

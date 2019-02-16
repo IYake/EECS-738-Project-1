@@ -6,6 +6,7 @@ import math
 from matplotlib.patches import Ellipse
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
+import inspect
 
 #read data
 Y_label = 'radius_mean'
@@ -79,8 +80,8 @@ malignant.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, lab
 bx.set_xlabel(X_label)
 bx.set_ylabel(Y_label)
 
-plt.plot(mu_1[0],mu_1[1],'gx')
-plt.plot(mu_2[0],mu_2[1],'gx')
+plt.plot(curve1.mu[0],curve1.mu[1],'gx')
+plt.plot(curve2.mu[0],curve2.mu[1],'gx')
 
 ###
 
@@ -113,10 +114,19 @@ e1 = Ellipse(mean1, width1, height1, angle1)
 e2 = Ellipse(mean2, width2, height2, angle2)
 e1.set_facecolor('purple')
 e2.set_facecolor('yellow')
+e1.set_alpha(0.5)
+e2.set_alpha(0.5)
 a.add_artist(e1)
 a.add_artist(e2)
 
+#plt.show()
+################# MAXIMIZATION STEP ################################
+print(gcc.log_likelihood(X.size,curve1, curve2))
 
+gcc.iterate(curve1,curve2,X,Y)
+
+bx.plot(curve1.mu[0],curve1.mu[1],'co', markersize =15)
+bx.plot(curve2.mu[0],curve2.mu[1],'co', markersize =15)
+
+print(gcc.log_likelihood(X.size,curve1, curve2))
 plt.show()
-
-##################################
