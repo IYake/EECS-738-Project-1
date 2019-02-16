@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import gaussian_curve_class as gcc
+import math
+from matplotlib.patches import Ellipse
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -79,9 +81,35 @@ bx.set_ylabel(Y_label)
 
 plt.plot(mu_1[0],mu_1[1],'gx')
 plt.plot(mu_2[0],mu_2[1],'gx')
-###
+a = plt.subplot()
+plt.scatter(X, Y, color = 'grey',s = 2)
+#works only if .mu returns a tuple
+mean1 = curve1.mu
+mean2 = curve2.mu
+
+#need to figure out how to get the cov of just one at a time
+#todo: figure out what Z is and what should be passed in
+cov1 = (curve1.covar(X, Y, Z1))
+cov2 = curve2.covar(X, Y, Z2)
+
+lambda1_, v1 = np.linalg.eig(cov1)
+lambda2_, v2 = np.linalg.eig(cov2)
+
+lambda1_ = np.sqrt(lambda1_)
+lambda2_ = np.sqrt(lambda2_)
+width1 = lambda1_[0] * 2 * ( 1)
+height1 = lambda1_[1] * 2 * ( 1)
+width2 = lambda2_[0] * 2 * ( 2)
+height2 = lambda2_[1] * 2 * (2)
+angle1 = math.degrees(math.acos(v1[0, 0]))
+angle2 = math.degrees(math.acos(v2[0, 0]))
+
+e1 = Ellipse(mean1, width1, height1, angle1)
+e2 = Ellipse(mean2, width2, height2, angle2)
+e1.set_facecolor('red')
+e2.set_facecolor('blue')
+a.add_artist(e1)
+a.add_artist(e2)
 
 
-
- 
-
+plt.show()
