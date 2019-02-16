@@ -81,6 +81,11 @@ plt.plot(mu_1[0],mu_1[1],'gx')
 plt.plot(mu_2[0],mu_2[1],'gx')
 ###
 
+a = np.array([[1,1],[1,1],[1,1]])
+z = np.array([[1],[2],[3]])
+
+print(np.multiply(a,z))
+
 
 
  

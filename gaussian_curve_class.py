@@ -62,7 +62,7 @@ class gaussian_curve:
         one = np.ones((size, size))
         #calculating devation values and storing in a
         #a1 is the column means (X and Y) repeated, e.g.
-        #a2 is column vectors (X-mu) (Y-mu)*Z
+        #a2 is column vectors (X-mu)*Z (Y-mu)*Z
         #a is column vectors (X-mu) (Y-mu)
         """
         66 90
@@ -72,10 +72,10 @@ class gaussian_curve:
         a1 = np.matmul(one, A)
         a1 = a1*(1/size)
         a = np.subtract(A, a1)
-        a2 = a
-        a2[:,1] = np.multiply(a2[:,1],np.transpose(Z))
+        
+        a2 = np.multiply(a,Z)
         #to find deviation score sums of sq matrix, compute a'a
-        V = np.matmul(np.transpose(a), a)
+        V = np.matmul(np.transpose(a2), a)
         V = V * (1/size)
         return V
         
