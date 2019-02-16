@@ -94,7 +94,11 @@ mean2 = curve2.mu
 #need to figure out how to get the cov of just one at a time
 #todo: figure out what Z is and what should be passed in
 #cov1 = (curve1.covar(X, Y, Z1))
-#cov2 = curve2.covar(X, Y, Z2)
+#cov2 = curve2.covar(X, Y, Z2)'
+gcc.iterate(curve1,curve2,X,Y)
+gcc.iterate(curve1,curve2,X,Y)
+gcc.iterate(curve1,curve2,X,Y)
+gcc.iterate(curve1,curve2,X,Y)
 cov1 = curve1.sigma
 cov2 = curve2.sigma
 
@@ -110,8 +114,8 @@ height2 = lambda2_[1] * 2 * (1)
 angle1 = math.degrees(math.acos(v1[0, 0]))
 angle2 = math.degrees(math.acos(v2[0, 0]))
 
-e1 = Ellipse(mean1, width1, height1, angle1)
-e2 = Ellipse(mean2, width2, height2, angle2)
+e1 = Ellipse(curve1.mu, width1, height1, angle1)
+e2 = Ellipse(curve2.mu, width2, height2, angle2)
 e1.set_facecolor('purple')
 e2.set_facecolor('yellow')
 e1.set_alpha(0.5)
@@ -121,12 +125,8 @@ a.add_artist(e2)
 
 #plt.show()
 ################# MAXIMIZATION STEP ################################
-print(gcc.log_likelihood(X.size,curve1, curve2))
 
-gcc.iterate(curve1,curve2,X,Y)
 
 bx.plot(curve1.mu[0],curve1.mu[1],'co', markersize =15)
 bx.plot(curve2.mu[0],curve2.mu[1],'co', markersize =15)
-
-print(gcc.log_likelihood(X.size,curve1, curve2))
 plt.show()
