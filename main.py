@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import gaussian_curve_class as gcc
+import math
+from matplotlib.patches import Ellipse
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -34,41 +36,39 @@ if (numPoints % 2 != 0):
 else:
     X = df.loc[:numPoints,X_label].values
     Y = df.loc[:numPoints,Y_label].values
-newXs = np.array_split(X,2)
-newYs = np.array_split(Y,2)
-newX = np.column_stack((newXs[0],newXs[1]))
-newY = np.column_stack((newYs[0],newYs[1]))
+X_arrs = np.array_split(X,2)
+Y_arrs = np.array_split(Y,2)
+twoD_X = np.column_stack((X_arrs[0],X_arrs[1]))
+twoD_Y = np.column_stack((Y_arrs[0],Y_arrs[1]))
+
 
 # Pack X and Y into a single 3-dimensional array
-X = newX
-Y = newY
-data_pos = np.empty(X.shape + (2,))
-data_pos[:, :, 0] = X
-data_pos[:, :, 1] = Y
+
+data_pos = np.empty(twoD_X.shape + (2,))
+data_pos[:, :, 0] = twoD_X
+data_pos[:, :, 1] = twoD_Y
+
 #calculate distribution values for points in data
-curve1.set_probabilities(curve1.probabilities_at(data_pos))
-curve2.set_probabilities(curve2.probabilities_at(data_pos))
+Z1 = curve1.probabilities_at(data_pos)
+Z2 = curve2.probabilities_at(data_pos)
+
+#unpack Z into single dimensional array
+Z11 = Z1[:,0]
+Z12 = Z1[:,1]
+Z1 = np.concatenate((Z11,Z12),axis=0)
+curve1.set_probabilities(Z1)
+
+Z21 = Z2[:,0]
+Z22 = Z2[:,1]
+Z2 = np.concatenate((Z21,Z22),axis=0)
+curve2.set_probabilities(Z2)
+
 #################
 # calculating responsibility
 ####### shape changes when probabilities are set for some reason. Put back getters to fix
-print(curve1.probabilities_at(data_pos).shape)
 
-curve1.set_responsibilities(  (curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities) )
-curve2.set_responsibilities(  (curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities) )
-
-### generate points to display ellipse on graph
-N = 60
-X = np.linspace(xMin-(xMax-xMin)*1/4, xMax+(xMax-xMin)*1/4, N)
-Y = np.linspace(yMin-(yMax-yMin)*1/4, yMax+(yMax-yMin)*1/4, N)
-X, Y = np.meshgrid(X, Y)
-###
-graphing_pos = np.empty(X.shape + (2,))
-graphing_pos[:, :, 0] = X
-graphing_pos[:, :, 1] = Y
-
-Z = curve1.probabilities_at(graphing_pos)
-Z2 = curve2.probabilities_at(graphing_pos)
-
+curve1.set_responsibilities((curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
+curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
 
 ###################
 #Plot scatter points
@@ -81,30 +81,36 @@ bx.set_ylabel(Y_label)
 
 plt.plot(mu_1[0],mu_1[1],'gx')
 plt.plot(mu_2[0],mu_2[1],'gx')
-###
-fig = plt.figure()
-ax = fig.gca(projection='3d')
+a = plt.subplot()
+plt.scatter(X, Y, color = 'grey',s = 2)
 
-step = 0.01
-m = np.amax(Z)
-levels = np.arange(m/2, m, step) + step
-offset=-0.15
-cset = ax.contourf(X, Y, Z, levels, zdir='z', offset=offset, cmap=cm.viridis, alpha = 0.3)
-cset = ax.contourf(X, Y, Z2, levels, zdir='z', offset=offset, cmap=cm.viridis, alpha = 0.3)
+#need to figure out how to get the cov of just one at a time
+#todo: figure out what Z is and what should be passed in
+#cov1 = (curve1.covar(X, Y, Z1))
+#cov2 = curve2.covar(X, Y, Z2)
+cov1 = curve1.sigma
+cov2 = curve2.sigma
+print(cov1)
+print(cov2)
 
-""" To see 3d view
-step = 0.002
-levels = np.arange(m/2, m, step) + step
-ax.plot_surface(X, Y, Z, levels, rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis, alpha = 0.5)
-ax.plot_surface(X, Y, Z2, levels, rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis, alpha = 0.5)
-"""
-# Adjust the limits, ticks and view angle
-ax.set_zlim(offset,-offset*3/2)
-ax.set_xlim(xMin-(xMax-xMin)*1/4, xMax + (xMax-xMin)*1/4)
-ax.set_ylim(yMin-(yMax-yMin)*1/4, yMax + (yMax-yMin)*1/4)
-#ax.set_zticks(np.linspace(0,0.2,5))
-ax.view_init(50, -120)
+lambda1_, v1 = np.linalg.eig(cov1)
+lambda2_, v2 = np.linalg.eig(cov2)
+
+lambda1_ = np.sqrt(lambda1_)
+lambda2_ = np.sqrt(lambda2_)
+width1 = lambda1_[0] * 2 * ( 1)
+height1 = lambda1_[1] * 2 * ( 1)
+width2 = lambda2_[0] * 2 * ( 1)
+height2 = lambda2_[1] * 2 * (1)
+angle1 = math.degrees(math.acos(v1[0, 0]))
+angle2 = math.degrees(math.acos(v2[0, 0]))
+
+e1 = Ellipse(curve1.mu, width1, height1, angle1)
+e2 = Ellipse(curve2.mu, width2, height2, angle2)
+e1.set_facecolor('red')
+e2.set_facecolor('blue')
+a.add_artist(e1)
+a.add_artist(e2)
+
 
 plt.show()
- 
-
