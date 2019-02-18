@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import gaussian_curve_class as gcc
 import math
-from matplotlib.patches import Ellipse
+
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 import inspect
@@ -95,33 +95,7 @@ mean2 = curve2.mu
 #todo: figure out what Z is and what should be passed in
 #cov1 = (curve1.covar(X, Y, Z1))
 #cov2 = curve2.covar(X, Y, Z2)'
-gcc.iterate(curve1,curve2,X,Y)
-gcc.iterate(curve1,curve2,X,Y)
-gcc.iterate(curve1,curve2,X,Y)
-gcc.iterate(curve1,curve2,X,Y)
-cov1 = curve1.sigma
-cov2 = curve2.sigma
 
-lambda1_, v1 = np.linalg.eig(cov1)
-lambda2_, v2 = np.linalg.eig(cov2)
-
-lambda1_ = np.sqrt(lambda1_)
-lambda2_ = np.sqrt(lambda2_)
-width1 = lambda1_[0] * 2 * ( 1)
-height1 = lambda1_[1] * 2 * ( 1)
-width2 = lambda2_[0] * 2 * ( 1)
-height2 = lambda2_[1] * 2 * (1)
-angle1 = math.degrees(math.acos(v1[0, 0]))
-angle2 = math.degrees(math.acos(v2[0, 0]))
-
-e1 = Ellipse(curve1.mu, width1, height1, angle1)
-e2 = Ellipse(curve2.mu, width2, height2, angle2)
-e1.set_facecolor('purple')
-e2.set_facecolor('yellow')
-e1.set_alpha(0.5)
-e2.set_alpha(0.5)
-a.add_artist(e1)
-a.add_artist(e2)
 
 #plt.show()
 ################# MAXIMIZATION STEP ################################
@@ -129,4 +103,10 @@ a.add_artist(e2)
 
 bx.plot(curve1.mu[0],curve1.mu[1],'co', markersize =15)
 bx.plot(curve2.mu[0],curve2.mu[1],'co', markersize =15)
+
+gcc.plot_curves(1,X,Y,curve1,curve2)
+gcc.iterate(curve1,curve2,X,Y)
 plt.show()
+
+
+    

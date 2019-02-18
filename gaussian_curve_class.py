@@ -1,6 +1,8 @@
 #from scipy.stats import multivariate_normal
 import numpy as np
 import math
+from matplotlib.patches import Ellipse
+import matplotlib.pyplot as plt
 #import matplotlib.pyplot as plt
 #from matplotlib import cm
 
@@ -87,6 +89,10 @@ class gaussian_curve:
         a2 = a
         a2[:,0] *= np.multiply(a2[:,0],R)
         a2[:,1] *= np.multiply(a2[:,1],R)
+        
+        #not sure where these NaNs are coming from
+        a2 = np.nan_to_num(a2)
+        a = np.nan_to_num(a)
         #to find deviation score sums of sq matrix, compute a'a
         V = np.matmul(np.transpose(a2), a)
         Nk = np.sum(self.responsibilities)
@@ -142,4 +148,32 @@ def iterate(curve1, curve2, X, Y):
     #5 update pi
     curve1.update_pi()
     curve2.update_pi()
-        
+
+def plot_curves(figureNum,X,Y,curve1,curve2):
+    plt.figure(figureNum)
+    a = plt.subplot()
+    
+    
+    cov1 = curve1.sigma
+    cov2 = curve2.sigma
+    
+    lambda1_, v1 = np.linalg.eig(cov1)
+    lambda2_, v2 = np.linalg.eig(cov2)
+    
+    lambda1_ = np.sqrt(lambda1_)
+    lambda2_ = np.sqrt(lambda2_)
+    width1 = lambda1_[0] * 2 * ( 1)
+    height1 = lambda1_[1] * 2 * ( 1)
+    width2 = lambda2_[0] * 2 * ( 1)
+    height2 = lambda2_[1] * 2 * (1)
+    angle1 = math.degrees(math.acos(v1[0, 0]))
+    angle2 = math.degrees(math.acos(v2[0, 0]))
+    
+    e1 = Ellipse(curve1.mu, width1, height1, angle1)
+    e2 = Ellipse(curve2.mu, width2, height2, angle2)
+    e1.set_facecolor('purple')
+    e2.set_facecolor('yellow')
+    e1.set_alpha(0.5)
+    e2.set_alpha(0.5)
+    a.add_artist(e1)
+    a.add_artist(e2)
