@@ -83,7 +83,7 @@ class gaussian_curve:
         a1 = np.matmul(one, A)
         a1 = a1*(1/size)
         a = np.subtract(A, a1)
-        
+
         a2 = a
         a2[:,0] *= np.multiply(a2[:,0],R)
         a2[:,1] *= np.multiply(a2[:,1],R)
@@ -92,17 +92,19 @@ class gaussian_curve:
         Nk = np.sum(self.responsibilities)
         V = V * (1/Nk)
         return V
-    
+
+    # self.cov.append(((1/m_c)*np.dot((np.array(r_ic[:,c]).reshape(len(self.X),1)*(self.X-mu_c)).T,(self.X-mu_c)))+self.reg_cov)
+
     def update_pi(self):
         Nk = np.sum(self.responsibilities)
         N = self.responsibilities.size
         self.pi = Nk/N
-    
+
     def update_mu(self, X, Y):
         Nk = np.sum(self.responsibilities)
         points = np.column_stack((X,Y))
         self.mu =  np.matmul(np.transpose(self.responsibilities), points) / Nk
-        
+
 
 def log_likelihood(size, curve1, curve2):
     log_likelihood = 0
@@ -118,11 +120,11 @@ def iterate(curve1, curve2, X, Y):
     #1 update mu
     curve1.update_mu(X,Y)
     curve2.update_mu(X,Y)
-    
+
     #2 update sigma
     curve1.update_sigma(X,Y)
     curve2.update_sigma(X,Y)
-    
+
     #3 update prob
     X_arrs = np.array_split(X,2)
     Y_arrs = np.array_split(Y,2)
@@ -131,15 +133,14 @@ def iterate(curve1, curve2, X, Y):
     data_pos = np.empty(twoD_X.shape + (2,))
     data_pos[:, :, 0] = twoD_X
     data_pos[:, :, 1] = twoD_Y
-    
+
     curve1.update_probs(data_pos)
     curve2.update_probs(data_pos)
-    
+
     #4 update resp
     curve1.set_responsibilities((curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
     curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
-    
+
     #5 update pi
     curve1.update_pi()
     curve2.update_pi()
-        
