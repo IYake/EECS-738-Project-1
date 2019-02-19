@@ -37,3 +37,7 @@ https://stattrek.com/matrix-algebra/covariance-matrix.aspx
 
 
 # Examples:
+![Breast Cancer Initial Plot](resources/cancer_initial.png)
+![Breast Cancer Final Plot](resources/cancer_final.png)
+![Wine Quality Initial Plot](resources/wine_initial.png)
+![Wine Quality Final Plot](resources/wine_final.png)
