@@ -72,7 +72,7 @@ curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.p
 
 
 ################# MAXIMIZATION STEP ################################
-steps = 5
+steps = 10
 for i in range(steps):
     gcc.plot_curves(i,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2)
     print(gcc.log_likelihood(curve1,curve2))
