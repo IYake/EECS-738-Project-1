@@ -17,7 +17,6 @@ frames = [good, bad]
 df = pd.concat(frames, ignore_index = True)
 print(df.shape)
 
-
 #create random means and sigmas and gaussian weighting factors
 numClasses = 2
 xMax, xMin, yMax, yMin = df.loc[:,X_label].max(), df.loc[:,X_label].min(), df.loc[:,Y_label].max(), df.loc[:,Y_label].min()
@@ -29,8 +28,6 @@ pi1 = 1.0/numClasses
 pi2 = 1.0/numClasses
 curve1 = gcc.gaussian_curve(mu_1, sigma1, pi1)
 curve2 = gcc.gaussian_curve(mu_2, sigma2, pi1)
-
-
 
 #reshape X column and Y column so they can be processed for Z
 numPoints = df.shape[0]
@@ -69,15 +66,10 @@ curve2.set_probabilities(Z2)
 
 #################
 # calculating responsibility
-####### shape changes when probabilities are set for some reason. Put back getters to fix
 curve1.set_responsibilities((curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
 curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
 
-###################
-#Plot scatter points
-###plot###
-
-
+### iterate
 steps = 50
 tolerance = 0.1
 previous_log_likelihood = gcc.log_likelihood(curve1, curve2)

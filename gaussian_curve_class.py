@@ -86,8 +86,6 @@ class gaussian_curve:
         a2 = a
         a2[:,0] *= np.multiply(a2[:,0],R)
         a2[:,1] *= np.multiply(a2[:,1],R)
-
-        #not sure where these NaNs are coming from
         a2 = np.nan_to_num(a2)
         a = np.nan_to_num(a)
         #to find deviation score sums of sq matrix, compute a'a
@@ -96,7 +94,6 @@ class gaussian_curve:
         V = V * (1/Nk)
         return V
 
-    # self.cov.append(((1/m_c)*np.dot((np.array(r_ic[:,c]).reshape(len(self.X),1)*(self.X-mu_c)).T,(self.X-mu_c)))+self.reg_cov)
 
     def update_pi(self):
         Nk = np.sum(self.responsibilities)
