@@ -1,13 +1,6 @@
 import pandas as pd
-
-import matplotlib.pyplot as plt
 import numpy as np
 import gaussian_curve_class as gcc
-import math
-
-from matplotlib import cm
-from mpl_toolkits.mplot3d import Axes3D
-import inspect
 #read data
 Y_label = 'radius_mean'
 X_label = 'concavity_mean'
@@ -73,7 +66,7 @@ curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.p
 
 ################# MAXIMIZATION STEP ################################
 steps = 50
-tolerance = 0.01
+tolerance = 0.1
 previous_log_likelihood = gcc.log_likelihood(curve1,curve2)
 for i in range(steps):
     gcc.plot_curves(i,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2)

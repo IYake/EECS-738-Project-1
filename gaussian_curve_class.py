@@ -1,10 +1,7 @@
-#from scipy.stats import multivariate_normal
 import numpy as np
 import math
 from matplotlib.patches import Ellipse
 import matplotlib.pyplot as plt
-#import matplotlib.pyplot as plt
-#from matplotlib import cm
 
 class gaussian_curve:
     def __init__(self, mu, sigma, pi): #pi = gaussian weighting factor
