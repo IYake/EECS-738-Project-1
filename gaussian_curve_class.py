@@ -112,9 +112,9 @@ class gaussian_curve:
         self.mu =  np.matmul(np.transpose(self.responsibilities), points) / Nk
 
 
-def log_likelihood(size, curve1, curve2):
+def log_likelihood(curve1, curve2):
     log_likelihood = 0
-    #print("Curve1, mu = %f, %f" % (curve1.mu[0], curve1.mu[1]))
+    size = curve1.probabilities.size
     for i in range(size):
         temp = curve1.pi*curve1.probabilities[i]
         temp += curve2.pi*curve2.probabilities[i]
