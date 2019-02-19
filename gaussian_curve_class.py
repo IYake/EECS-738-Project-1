@@ -160,8 +160,10 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     class2_points.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, label=Y_label)
     plt.plot(curve1.mu[0],curve1.mu[1],'co',markersize=10)
     plt.plot(curve2.mu[0],curve2.mu[1],'co',markersize=10)
-    bx.set_xlabel(X_label)
-    bx.set_ylabel(Y_label)
+    X_label_normalized = X_label + "_normalized"
+    Y_label_normalized = Y_label + "_normalized"
+    bx.set_xlabel(X_label_normalized)
+    bx.set_ylabel(Y_label_normalized)
     
     cov1 = curve1.sigma
     cov2 = curve2.sigma
@@ -180,7 +182,7 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     e1 = Ellipse(curve1.mu, width1, height1, angle1)
     e2 = Ellipse(curve2.mu, width2, height2, angle2)
     e1.set_facecolor('purple')
-    e2.set_facecolor('yellow')
+    e2.set_facecolor('green')
     e1.set_alpha(0.3)
     e2.set_alpha(0.3)
     bx.add_artist(e1)
