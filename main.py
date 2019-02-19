@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import gaussian_curve_class as gcc
 #read data
-Y_label = 'radius_mean'
+Y_label = 'texture_mean'
 X_label = 'concavity_mean'
 class1 = 'B'
 class2 = 'M'
