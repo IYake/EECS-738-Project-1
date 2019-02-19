@@ -20,7 +20,7 @@ Our first data set, breast cancer, we chose to use EM with two clusters since th
 For our second data set we chose the Wine Quality Dataset. Since the quality of the wine was on a scale from 1-10, we catergorized the wine into good and bad categories. The bad wine category ranged from quality ratings of 1-4 and the good wine category ranged from 7-10. We decided to use EM with two clusters and two independent variables: sulphates and volatile acidity of the wine. In our model we are only including values with a quality rating of 1-4 and 7-10. 
 
 # How to Compile: 
-Our project uses Python with Python libraries: matplotlib, numpy, pandas, math. To run this project: pip install matplotlib numpy pandas math. Then run python main.py for the first data set and python main2.py for the second dataset. To see the plots you'll need an IDE like jupyter or spyder. 
+Our project uses Python 3.7.1 with Python libraries: matplotlib, numpy, pandas, math. To run this project: pip install matplotlib numpy pandas math. Then run python main.py for the first data set and python main2.py for the second dataset. To see the plots you'll need an IDE like jupyter or spyder. 
 
 
 # References: 
