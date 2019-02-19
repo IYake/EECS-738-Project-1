@@ -89,7 +89,7 @@ class gaussian_curve:
         a2 = a
         a2[:,0] *= np.multiply(a2[:,0],R)
         a2[:,1] *= np.multiply(a2[:,1],R)
-        
+
         #not sure where these NaNs are coming from
         a2 = np.nan_to_num(a2)
         a = np.nan_to_num(a)
@@ -155,7 +155,7 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     bx = plt.figure(figureNum)
     class1_points = df.loc[df[class_feature] == class1]
     class2_points = df.loc[df[class_feature] == class2]
-    
+
     bx = class1_points.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = X_label)
     class2_points.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, label=Y_label)
     plt.plot(curve1.mu[0],curve1.mu[1],'co',markersize=10)
@@ -164,10 +164,10 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     Y_label_normalized = Y_label + "_normalized"
     bx.set_xlabel(X_label_normalized)
     bx.set_ylabel(Y_label_normalized)
-    
+
     cov1 = curve1.sigma
     cov2 = curve2.sigma
-    
+
     lambda1_, v1 = np.linalg.eig(cov1)
     lambda2_, v2 = np.linalg.eig(cov2)
     lambda1_ = np.sqrt(lambda1_)
@@ -178,7 +178,7 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     height2 = (lambda2_[1] * 2 * (3))
     angle1 = math.degrees(math.acos(v1[0, 0]))
     angle2 = math.degrees(math.acos(v2[0, 0]))
-    
+
     e1 = Ellipse(curve1.mu, width1, height1, angle1)
     e2 = Ellipse(curve2.mu, width2, height2, angle2)
     e1.set_facecolor('purple')
@@ -187,4 +187,3 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     e2.set_alpha(0.3)
     bx.add_artist(e1)
     bx.add_artist(e2)
-    
