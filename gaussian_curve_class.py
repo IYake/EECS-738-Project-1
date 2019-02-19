@@ -114,7 +114,7 @@ class gaussian_curve:
 
 def log_likelihood(size, curve1, curve2):
     log_likelihood = 0
-    print("Curve1, mu = %f, %f" % (curve1.mu[0], curve1.mu[1]))
+    #print("Curve1, mu = %f, %f" % (curve1.mu[0], curve1.mu[1]))
     for i in range(size):
         temp = curve1.pi*curve1.probabilities[i]
         temp += curve2.pi*curve2.probabilities[i]
@@ -152,7 +152,7 @@ def iterate(curve1, curve2, X, Y):
     curve2.update_pi()
 
 def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2):
-    plt.figure(figureNum)
+    bx = plt.figure(figureNum)
     class1_points = df.loc[df[class_feature] == class1]
     class2_points = df.loc[df[class_feature] == class2]
     
@@ -184,3 +184,4 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     e2.set_alpha(0.5)
     bx.add_artist(e1)
     bx.add_artist(e2)
+    

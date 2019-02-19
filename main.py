@@ -1,4 +1,5 @@
 import pandas as pd
+
 import matplotlib.pyplot as plt
 import numpy as np
 import gaussian_curve_class as gcc
@@ -7,7 +8,6 @@ import math
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 import inspect
-
 #read data
 Y_label = 'radius_mean'
 X_label = 'concavity_mean'
@@ -18,7 +18,7 @@ df = pd.read_csv('data/breast_cancer.csv', usecols = ['diagnosis', Y_label, X_la
 benign = df.loc[df[class_feature] == class1]
 malignant = df.loc[df[class_feature] == class2]
 
-#create random means and sigmas and gaussian weighting factors
+### create random means and sigmas and gaussian weighting factors ###
 numClasses = 2
 xMax, xMin, yMax, yMin = df.loc[:,X_label].max(), df.loc[:,X_label].min(), df.loc[:,Y_label].max(), df.loc[:,Y_label].min()
 mu_1 = np.array([(xMax-xMin)*3/4+xMin,(yMax-yMin)*1/4+yMin])
@@ -29,8 +29,6 @@ pi1 = 1.0/numClasses
 pi2 = 1.0/numClasses
 curve1 = gcc.gaussian_curve(mu_1, sigma1, pi1)
 curve2 = gcc.gaussian_curve(mu_2, sigma2, pi1)
-
-
 
 #reshape X column and Y column so they can be processed for Z
 numPoints = df.shape[0]
@@ -52,10 +50,11 @@ data_pos = np.empty(twoD_X.shape + (2,))
 data_pos[:, :, 0] = twoD_X
 data_pos[:, :, 1] = twoD_Y
 
-#calculate distribution values for points in data
+### calculate distribution values for points in data ###
 Z1 = curve1.probabilities_at(data_pos)
 Z2 = curve2.probabilities_at(data_pos)
 
+#### set probabilities ###
 #unpack Z into single dimensional array
 Z11 = Z1[:,0]
 Z12 = Z1[:,1]
@@ -67,32 +66,17 @@ Z22 = Z2[:,1]
 Z2 = np.concatenate((Z21,Z22),axis=0)
 curve2.set_probabilities(Z2)
 
-#################
-# calculating responsibility
-####### shape changes when probabilities are set for some reason. Put back getters to fix
-
+### calculating responsibility ###
 curve1.set_responsibilities((curve1.pi*curve1.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
 curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.probabilities+curve1.pi*curve1.probabilities))
 
-###################
-#Plot scatter points
-###plot###
 
-
-#need to figure out how to get the cov of just one at a time
-#todo: figure out what Z is and what should be passed in
-#cov1 = (curve1.covar(X, Y, Z1))
-#cov2 = curve2.covar(X, Y, Z2)'
-
-
-#plt.show()
 ################# MAXIMIZATION STEP ################################
 
 for i in range(4):
     gcc.plot_curves(i,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2)
     gcc.iterate(curve1,curve2,X,Y)
 
-plt.show()
 
 
     
