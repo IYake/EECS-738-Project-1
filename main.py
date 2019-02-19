@@ -11,17 +11,20 @@ import inspect
 #read data
 Y_label = 'radius_mean'
 X_label = 'concavity_mean'
+class1 = 'B'
+class2 = 'M'
+class_feature = 'diagnosis'
 df = pd.read_csv('data/breast_cancer.csv', usecols = ['diagnosis', Y_label, X_label])
-benign = df.loc[df['diagnosis'] == 'B']
-malignant = df.loc[df['diagnosis'] == 'M']
+benign = df.loc[df[class_feature] == class1]
+malignant = df.loc[df[class_feature] == class2]
 
 #create random means and sigmas and gaussian weighting factors
 numClasses = 2
 xMax, xMin, yMax, yMin = df.loc[:,X_label].max(), df.loc[:,X_label].min(), df.loc[:,Y_label].max(), df.loc[:,Y_label].min()
 mu_1 = np.array([(xMax-xMin)*3/4+xMin,(yMax-yMin)*1/4+yMin])
 mu_2 = np.array([(xMax-xMin)*1/4+xMin,(yMax-yMin)*3/4+yMin])
-sigma1 = np.array([[(xMax-xMin)/32,0],[0,(yMax-yMin)/2]])
-sigma2 = np.array([[(xMax-xMin)/32,0],[0,(yMax-yMin)/2]])
+sigma1 = np.array([[(xMax-xMin)/128,0],[0,(yMax-yMin)/8]])
+sigma2 = np.array([[(xMax-xMin)/128,0],[0,(yMax-yMin)/8]])
 pi1 = 1.0/numClasses
 pi2 = 1.0/numClasses
 curve1 = gcc.gaussian_curve(mu_1, sigma1, pi1)
@@ -74,19 +77,6 @@ curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.p
 ###################
 #Plot scatter points
 ###plot###
-bx = benign.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = 'malignant')
-malignant.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, label='benign')
-
-bx.set_xlabel(X_label)
-bx.set_ylabel(Y_label)
-
-plt.plot(curve1.mu[0],curve1.mu[1],'gx')
-plt.plot(curve2.mu[0],curve2.mu[1],'gx')
-
-###
-
-a = plt.subplot()
-plt.scatter(X, Y, color = 'grey',s = 2)
 
 
 #need to figure out how to get the cov of just one at a time
@@ -98,12 +88,10 @@ plt.scatter(X, Y, color = 'grey',s = 2)
 #plt.show()
 ################# MAXIMIZATION STEP ################################
 
+for i in range(4):
+    gcc.plot_curves(i,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2)
+    gcc.iterate(curve1,curve2,X,Y)
 
-bx.plot(curve1.mu[0],curve1.mu[1],'co', markersize =15)
-bx.plot(curve2.mu[0],curve2.mu[1],'co', markersize =15)
-
-gcc.plot_curves(1,X,Y,curve1,curve2)
-gcc.iterate(curve1,curve2,X,Y)
 plt.show()
 
 

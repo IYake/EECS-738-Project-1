@@ -151,10 +151,15 @@ def iterate(curve1, curve2, X, Y):
     curve1.update_pi()
     curve2.update_pi()
 
-def plot_curves(figureNum,X,Y,curve1,curve2):
+def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2):
     plt.figure(figureNum)
-    a = plt.subplot()
+    class1_points = df.loc[df[class_feature] == class1]
+    class2_points = df.loc[df[class_feature] == class2]
     
+    bx = class1_points.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = X_label)
+    class2_points.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, label=Y_label)
+    bx.set_xlabel(X_label)
+    bx.set_ylabel(Y_label)
     
     cov1 = curve1.sigma
     cov2 = curve2.sigma
@@ -164,10 +169,10 @@ def plot_curves(figureNum,X,Y,curve1,curve2):
     
     lambda1_ = np.sqrt(lambda1_)
     lambda2_ = np.sqrt(lambda2_)
-    width1 = lambda1_[0] * 2 * ( 1)
-    height1 = lambda1_[1] * 2 * ( 1)
-    width2 = lambda2_[0] * 2 * ( 1)
-    height2 = lambda2_[1] * 2 * (1)
+    width1 = lambda1_[0] * 2 * ( 3)
+    height1 = lambda1_[1] * 2 * ( 3)
+    width2 = lambda2_[0] * 2 * ( 3)
+    height2 = lambda2_[1] * 2 * (3)
     angle1 = math.degrees(math.acos(v1[0, 0]))
     angle2 = math.degrees(math.acos(v2[0, 0]))
     
@@ -177,5 +182,5 @@ def plot_curves(figureNum,X,Y,curve1,curve2):
     e2.set_facecolor('yellow')
     e1.set_alpha(0.5)
     e2.set_alpha(0.5)
-    a.add_artist(e1)
-    a.add_artist(e2)
+    bx.add_artist(e1)
+    bx.add_artist(e2)
