@@ -10,6 +10,7 @@ class gaussian_curve:
     def __init__(self, mu, sigma, pi): #pi = gaussian weighting factor
         self.mu = mu
         self.sigma = sigma
+        self.sigma_det_tolerance = 2**85
         self.pi = pi
         self.probabilities = None
         self.responsibilities = None
@@ -20,9 +21,13 @@ class gaussian_curve:
         return self.mu
 
     def set_sigma(self, value):
+        #prevent overflow on the inverse of sigma in the multivariate density calculation
+        if ((1/np.linalg.det(self.sigma)) > self.sigma_det_tolerance):
+            value = self.sigma/2
         self.sigma = value
     def update_sigma(self,X,Y):
-        self.sigma = self.covar(X,Y,self.responsibilities)
+        value = self.covar(X,Y,self.responsibilities)
+        self.set_sigma(value)
 
     def set_pi(self, value):
         self.pi = value
@@ -42,9 +47,6 @@ class gaussian_curve:
     def set_responsibilities(self, responsibilities):
         self.responsibilities = responsibilities
 
-    #def update_normal(self):
-    #    self.normal = multivariate_normal(self.mu,self.sigma)
-
     def multivariate_gaussian(self, pos):
         """Return the multivariate Gaussian distribution on array pos.
 
@@ -63,10 +65,8 @@ class gaussian_curve:
         # This einsum call calculates (x-mu)T.Sigma-1.(x-mu) in a vectorized
         # way across all the input variables.
         fac = np.einsum('...k,kl,...l->...', pos-self.mu, Sigma_inv, pos-self.mu)
-
         return np.exp(-fac / 2) / N
 
-#Still need to factor in the responsibility
     def covar(self, X, Y, R):
         size = len(X)
         #combine matrices to make a 2d array
