@@ -158,6 +158,8 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     
     bx = class1_points.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = X_label)
     class2_points.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, label=Y_label)
+    plt.plot(curve1.mu[0],curve1.mu[1],'co',markersize=10)
+    plt.plot(curve2.mu[0],curve2.mu[1],'co',markersize=10)
     bx.set_xlabel(X_label)
     bx.set_ylabel(Y_label)
     
@@ -166,13 +168,12 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     
     lambda1_, v1 = np.linalg.eig(cov1)
     lambda2_, v2 = np.linalg.eig(cov2)
-    
     lambda1_ = np.sqrt(lambda1_)
     lambda2_ = np.sqrt(lambda2_)
-    width1 = lambda1_[0] * 2 * ( 3)
-    height1 = lambda1_[1] * 2 * ( 3)
-    width2 = lambda2_[0] * 2 * ( 3)
-    height2 = lambda2_[1] * 2 * (3)
+    width1 = (lambda1_[0] * 2 * ( 3))
+    height1 = (lambda1_[1] * 2 * ( 3))
+    width2 = (lambda2_[0] * 2 * ( 3))
+    height2 = (lambda2_[1] * 2 * (3))
     angle1 = math.degrees(math.acos(v1[0, 0]))
     angle2 = math.degrees(math.acos(v2[0, 0]))
     
@@ -180,8 +181,8 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     e2 = Ellipse(curve2.mu, width2, height2, angle2)
     e1.set_facecolor('purple')
     e2.set_facecolor('yellow')
-    e1.set_alpha(0.5)
-    e2.set_alpha(0.5)
+    e1.set_alpha(0.3)
+    e2.set_alpha(0.3)
     bx.add_artist(e1)
     bx.add_artist(e2)
     

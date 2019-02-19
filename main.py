@@ -15,9 +15,8 @@ class1 = 'B'
 class2 = 'M'
 class_feature = 'diagnosis'
 df = pd.read_csv('data/breast_cancer.csv', usecols = ['diagnosis', Y_label, X_label])
-benign = df.loc[df[class_feature] == class1]
-malignant = df.loc[df[class_feature] == class2]
-
+df[X_label] = (df[X_label]-df[X_label].mean()) / (df[X_label].max()-df[X_label].min())
+df[Y_label] = (df[Y_label]-df[Y_label].mean()) / (df[Y_label].max()-df[Y_label].min())
 ### create random means and sigmas and gaussian weighting factors ###
 numClasses = 2
 xMax, xMin, yMax, yMin = df.loc[:,X_label].max(), df.loc[:,X_label].min(), df.loc[:,Y_label].max(), df.loc[:,Y_label].min()
@@ -73,7 +72,7 @@ curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.p
 
 ################# MAXIMIZATION STEP ################################
 
-for i in range(4):
+for i in range(5):
     gcc.plot_curves(i,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2)
     gcc.iterate(curve1,curve2,X,Y)
 
