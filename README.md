@@ -6,15 +6,14 @@ Contributors: Ian Yake and Jules Garrett
 # Expectation Maximization Algorithm:
 
 Our algorithm consists of 4 steps: 
-  1) Placing a random mean, finding the standard deviation and the weighting factor for each Gaussian. 
-  2) Assigning a responsibility for each point. 
-  3) Finding new means, standard deviation, and weighting factor taking into account the responsibility
-  calculated in the second step. 
-  4) The algorithm will now check to see if the log likelihood is less than the stepping factor. If so, the algorithm stops,        if not the algorithm will interate through the second and third step until this condition is met. 
+  1) Assign a random mean, standard deviation, weighting factor for each Gaussian. 
+  2) Assign a responsibility for each point. 
+  3) Find new means, standard deviation, and weighting factor taking into account each Gaussian's responsibility for each point.
+  4) Check if the log likelihood is less than the tolerance level. If so, the algorithm stops; if not, the algorithm will return to step 2. 
 
 # Data Set One:
 
-Our first data set, breast cancer, we chose to use EM with two clusters since there is two different type of tumors being described in the data set: benign and malignant. We then chose two independent variables (radius mean and concavity mean) to analyize within the data set. 
+Our first data set, breast cancer, we chose to use EM with two clusters since there is two different type of tumors being described in the data set: benign and malignant. We then chose two independent variables (radius mean and concavity mean) to analyze within the data set. 
 
 # Data Set Two:
 
