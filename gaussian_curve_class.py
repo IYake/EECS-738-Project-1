@@ -153,18 +153,20 @@ def plot_curves(figureNum,df,X_label,Y_label,class_feature,class1,class2,curve1,
     class1_points = df.loc[df[class_feature] == class1]
     class2_points = df.loc[df[class_feature] == class2]
     
+    #plot points
     bx = class1_points.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = X_label)
     class2_points.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, label=Y_label)
-    plt.plot(curve1.mu[0],curve1.mu[1],'co',markersize=10)
+    plt.plot(curve1.mu[0],curve1.mu[1],'co',markersize=10, label = 'cluster mean')
     plt.plot(curve2.mu[0],curve2.mu[1],'co',markersize=10)
+    plt.legend(loc='best')
     X_label_normalized = X_label + "_normalized"
     Y_label_normalized = Y_label + "_normalized"
     bx.set_xlabel(X_label_normalized)
     bx.set_ylabel(Y_label_normalized)
     
+    #plot ellipses
     cov1 = curve1.sigma
     cov2 = curve2.sigma
-    
     lambda1_, v1 = np.linalg.eig(cov1)
     lambda2_, v2 = np.linalg.eig(cov2)
     lambda1_ = np.sqrt(lambda1_)
