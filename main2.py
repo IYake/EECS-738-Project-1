@@ -2,11 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import gaussian_curve_class as gcc
-import math
-from matplotlib.patches import Ellipse
-from matplotlib import cm
-from mpl_toolkits.mplot3d import Axes3D
-import inspect
+
 
 #read data
 Y_label = 'pH'
@@ -27,8 +23,8 @@ numClasses = 2
 xMax, xMin, yMax, yMin = df.loc[:,X_label].max(), df.loc[:,X_label].min(), df.loc[:,Y_label].max(), df.loc[:,Y_label].min()
 mu_1 = np.array([(xMax-xMin)*3/4+xMin,(yMax-yMin)*1/4+yMin])
 mu_2 = np.array([(xMax-xMin)*1/4+xMin,(yMax-yMin)*3/4+yMin])
-sigma1 = np.array([[(xMax-xMin)/32,0],[0,(yMax-yMin)/2]])
-sigma2 = np.array([[(xMax-xMin)/32,0],[0,(yMax-yMin)/2]])
+sigma1 = np.array([[(xMax-xMin)/128,0],[0,(yMax-yMin)/8]])
+sigma2 = np.array([[(xMax-xMin)/128,0],[0,(yMax-yMin)/8]])
 pi1 = 1.0/numClasses
 pi2 = 1.0/numClasses
 curve1 = gcc.gaussian_curve(mu_1, sigma1, pi1)
@@ -81,12 +77,17 @@ curve2.set_responsibilities((curve2.pi*curve2.probabilities)/(curve2.pi*curve2.p
 #Plot scatter points
 ###plot###
 
-bx = good.plot(kind='scatter',x = X_label, y = Y_label,color='red', label = 'good', s = 2)
-bad.plot(kind='scatter',x = X_label, y = Y_label, color='blue', ax=bx, label='bad', s =2)
-#
 
-steps = 5
+steps = 50
+tolerance = 0.1
+previous_log_likelihood = gcc.log_likelihood(curve1, curve2)
 for i in range(steps):
     gcc.plot_curves(i,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2)
-    print(gcc.log_likelihood(curve1,curve2))
-    gcc.iterate(curve1,curve2,X,Y)
+    gcc.iterate(curve1, curve2, X, Y)
+    curr_log_likelihood = gcc.log_likelihood(curve1,curve2)
+    print(curr_log_likelihood)
+    if (abs(curr_log_likelihood - previous_log_likelihood) < tolerance):
+        gcc.plot_curves(i,df,X_label,Y_label,class_feature,class1,class2,curve1,curve2)
+        break
+    else:
+        previous_log_likelihood = curr_log_likelihood
