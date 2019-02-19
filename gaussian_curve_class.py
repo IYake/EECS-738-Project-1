@@ -10,7 +10,7 @@ class gaussian_curve:
     def __init__(self, mu, sigma, pi): #pi = gaussian weighting factor
         self.mu = mu
         self.sigma = sigma
-        #self.sigma_det_tolerance = 2**85
+        self.sigma_det_tolerance = 1/(2**20)
         self.pi = pi
         self.probabilities = None
         self.responsibilities = None
@@ -22,8 +22,8 @@ class gaussian_curve:
 
     def set_sigma(self, value):
         #prevent overflow on the inverse of sigma in the multivariate density calculation
-        #if ((1/np.linalg.det(self.sigma)) > self.sigma_det_tolerance):
-        #    value = self.sigma/2
+        if ((np.linalg.det(value)) < self.sigma_det_tolerance):
+            value = value*2
         self.sigma = value
     def update_sigma(self,X,Y):
         value = self.covar(X,Y,self.responsibilities)
