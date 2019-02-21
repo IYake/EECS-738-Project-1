@@ -23,7 +23,7 @@ Our first data set, [The Breast Cancer Wisconsin (Diagnostic) Data Set](https://
 For our second data set we chose the [Wine Quality Dataset](https://www.kaggle.com/uciml/red-wine-quality-cortez-et-al-2009). Since the quality of the wine was on a scale from 1-10, we categorized the wine into good and bad categories. The bad wine category ranged from quality ratings of 1-4 and the good wine category ranged from 7-10. We decided to use EM with two clusters and two independent variables: sulphates and volatile acidity of the wine. 
 
 # How to Compile: 
-git 
+ 
 Our project uses Python 3.7.1 with the modules: matplotlib, numpy, pandas, math.
 
 To run this project, run `python main.py` for the first data set and `python main2.py` for the second dataset. To see the plots you'll need an IDE like jupyter or spyder. 
